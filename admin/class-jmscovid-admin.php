@@ -20,7 +20,6 @@ if ( ! class_exists( 'JmsCovid_Admin' ) ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ), 99999 );
 
 			add_action( 'jms_check_covid_19', array( $this, 'jms_covid_19_cron_exec' ) );
-
 		}
 
 		/**
@@ -39,7 +38,6 @@ if ( ! class_exists( 'JmsCovid_Admin' ) ) {
 				'dashicons-admin-comments',
 				888
 			);
-
 		}
 
 		/**
@@ -114,70 +112,40 @@ if ( ! class_exists( 'JmsCovid_Admin' ) ) {
 		 *  Get data covid 19
 		 */
 		public function get_data_covid() {
-			$url   = esc_url( 'https://www.worldometers.info/coronavirus/' );
-			$html  = $this->jms_file_get_html( $url );
-			$table = $html->find( 'table#main_table_countries_today', 0 );
+			$request_1   = 'https://corona.lmao.ninja/countries';
+			$request_2   = 'https://corona.lmao.ninja/all';
+			$response_1 = wp_remote_get( esc_url( $request_1 ) );
+			$response_2 = wp_remote_get( esc_url( $request_2 ) );
 
-			$country = array();
-			$data    = array();
-			$keys    = array();
-
-			foreach ( $table->find( 'thead tr th' ) as $e ) {
-				$sanitize_title                   = sanitize_title( trim( $e->plaintext ) );
-				$data['label'][ $sanitize_title ] = trim( $e->plaintext );
-				$keys[]                           = $sanitize_title;
-			}
-			foreach ( $table->find( 'tbody tr' ) as $r => $row ) {
-				foreach ( $row->find( 'td' ) as $i => $col ) {
-					$country{$r}[ $keys[ $i ] ] = trim( $col->plaintext );
-				}
-			}
-			$data['global']  = array_pop( $country );
-			$data['country'] = $country;
-
-			update_option( 'jms_covid_data', $data );
-		}
-
-		/**
-		 * Jms file get html
-		 *
-		 * @param string $url Url.
-		 * @param bool   $lowercase Lowercase . Default is true.
-		 * @param bool   $force_tags_closed ForceTagsClosed . Default is true.
-		 * @param string $target_charset DEFAULT_TARGET_CHARSET.
-		 * @param bool   $strip_r_n stripRN . Default is true.
-		 * @param string $default_b_r_text DEFAULT_BR_TEXT.
-		 * @param string $default_span_text DEFAULT_SPAN_TEXT.
-		 *
-		 * @return bool|simple_html_dom
-		 */
-		private function jms_file_get_html(
-			$url,
-			$lowercase = true,
-			$force_tags_closed = true,
-			$target_charset = DEFAULT_TARGET_CHARSET,
-			$strip_r_n = true,
-			$default_b_r_text = DEFAULT_BR_TEXT,
-			$default_span_text = DEFAULT_SPAN_TEXT ) {
-
-			$dom = new simple_html_dom(
-				null,
-				$lowercase,
-				$force_tags_closed,
-				$target_charset,
-				$strip_r_n,
-				$default_b_r_text,
-				$default_span_text
-			);
-
-			$response = wp_remote_get( esc_url( $url ) );
-			if ( is_wp_error( $response ) ) {
+			if ( is_wp_error( $response_1 ) || is_wp_error( $response_2)) {
 				return false;
 			}
-			$contents = wp_remote_retrieve_body( $response );
 
-			return $dom->load( $contents, $lowercase, $strip_r_n );
+			$results_1 = json_decode( wp_remote_retrieve_body( $response_1 ), true );
+			$results_2 = json_decode( wp_remote_retrieve_body( $response_2 ), true );
+
+			if ( ! is_array( $results_1 ) || ! is_array( $results_2 )) {
+				return false;
+			}else{
+				$data['label'] = [
+					'country' => __('Country, Other','jms-covid-19'),
+					'cases' => __('Total Cases','jms-covid-19'),
+					'todayCases' => __('New Cases','jms-covid-19'),
+					'deaths' => __('Total Deaths','jms-covid-19'),
+					'todayDeaths' => __('New Cases','jms-covid-19'),
+					'recovered' => __('Total Recovered','jms-covid-19'),
+					'active' => __('Active Cases','jms-covid-19'),
+					'critical' => __('Serious, Critical','jms-covid-19'),
+					'casesPerOneMillion' => __('Tot Cases / 1M pop','jms-covid-19'),
+					'deathsPerOneMillion' => __('Deaths/ 1M pop','jms-covid-19'),
+				];
+				$data['country'] = $results_1;
+				$data['global'] = $results_2;
+				$data['global']['country'] = __( 'Global', 'jms-covid-19' );
+				update_option( 'jms_covid_data', $data );
+			}
 		}
+
 	}
 }
 

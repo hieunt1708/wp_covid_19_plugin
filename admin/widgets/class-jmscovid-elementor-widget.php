@@ -87,7 +87,7 @@ if ( ! class_exists( 'JmsCovid_Elementor_Widget' ) ) {
 			$data             = get_option( 'jms_covid_data', array() );
 			$option_countries = array();
 			if ( isset( $data['country'] ) ) {
-				$option_countries = wp_list_pluck( $data['country'], 'countryother' );
+				$option_countries = wp_list_pluck( $data['country'], 'country' );
 			}
 			$this->start_controls_section(
 				'content_section',

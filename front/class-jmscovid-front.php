@@ -320,19 +320,19 @@ if ( ! class_exists( 'JmsCovid_Front' ) ) {
 										<div class="cv-desc">
 											<div class="cv-desc-col">
 												<div class="cv-global-label"><?php esc_html_e( 'Confirmed Cases', 'jms-covid-19' ); ?></div>
-												<div class="cv-confirmed"><?php echo ! empty( $data['global']['totalcases'] ) ? esc_html( $data['global']['totalcases'] ) : 0; ?></div>
+												<div class="cv-confirmed"><?php echo ! empty( $data['global']['cases'] ) ? esc_html( $this->jms_number_format($data['global']['cases']) ) : 0; ?></div>
 											</div>
 											<div class="cv-desc-col">
 												<div class="description cv-global-label"><?php esc_html_e( 'Active cases', 'jms-covid-19' ); ?></div>
-												<div class="total cv-active"><?php echo ! empty( $data['global']['activecases'] ) ? esc_html( $data['global']['activecases'] ) : 0; ?></div>
+												<div class="total cv-active"><?php echo ! empty( $data['global']['active'] ) ? esc_html( $this->jms_number_format($data['global']['active']) ) : 0; ?></div>
 											</div>
 											<div class="cv-desc-col">
 												<div class="description cv-global-label"><?php esc_html_e( 'Recovered cases', 'jms-covid-19' ); ?></div>
-												<div class="total cv-recovered"><?php echo ! empty( $data['global']['totalrecovered'] ) ? esc_html( $data['global']['totalrecovered'] ) : 0; ?></div>
+												<div class="total cv-recovered"><?php echo ! empty( $data['global']['recovered'] ) ? esc_html( $this->jms_number_format($data['global']['recovered']) ) : 0; ?></div>
 											</div>
 											<div class="cv-desc-col">
 												<div class="description cv-global-label"><?php esc_html_e( 'Deaths cases', 'jms-covid-19' ); ?></div>
-												<div class="total cv-deaths"><?php echo ! empty( $data['global']['totaldeaths'] ) ? esc_html( $data['global']['totaldeaths'] ) : 0; ?></div>
+												<div class="total cv-deaths"><?php echo ! empty( $data['global']['deaths'] ) ? esc_html( $this->jms_number_format($data['global']['deaths']) ) : 0; ?></div>
 											</div>
 										</div>
 									<?php endif; ?>
@@ -343,9 +343,9 @@ if ( ! class_exists( 'JmsCovid_Front' ) ) {
 										foreach ( $data['country'] as $country ) :
 											?>
 											<li class="cv-nav-item">
-												<a href="#<?php echo esc_attr( sanitize_title( $country['countryother'] ) ); ?>" class="cv-nav-link">
-													<?php echo esc_html( $country['countryother'] ); ?>
-													<span class="areaTotal"><?php echo ! empty( $country['totalcases'] ) ? esc_html( $country['totalcases'] ) : 0; ?></span>
+												<a href="#<?php echo esc_attr( sanitize_title( $country['country'] ) ); ?>" class="cv-nav-link">
+													<?php echo esc_html( $country['country'] ); ?>
+													<span class="areaTotal"><?php echo ! empty( $country['cases'] ) ? esc_html( $this->jms_number_format($country['cases']) ) : 0; ?></span>
 												</a>
 											</li>
 										<?php endforeach; ?>
@@ -353,30 +353,30 @@ if ( ! class_exists( 'JmsCovid_Front' ) ) {
 									<div class="cv-tab-content">
 										<?php
 										foreach ( $data['country'] as $country ) :
-											$totalcases     = ! empty( $country['totalcases'] ) ? $country['totalcases'] : 0;
-											$activecases    = ! empty( $country['activecases'] ) ? $country['activecases'] : 0;
-											$totalrecovered = ! empty( $country['totalrecovered'] ) ? $country['totalrecovered'] : 0;
-											$totaldeaths    = ! empty( $country['totaldeaths'] ) ? $country['totaldeaths'] : 0;
+											$cases     = ! empty( $country['cases'] ) ? $country['cases'] : 0;
+											$active    = ! empty( $country['active'] ) ? $country['active'] : 0;
+											$recovered = ! empty( $country['recovered'] ) ? $country['recovered'] : 0;
+											$deaths    = ! empty( $country['deaths'] ) ? $country['deaths'] : 0;
 											?>
-											<div class="cv-tab-panel" id="<?php echo esc_attr( sanitize_title( $country['countryother'] ) ); ?>">
+											<div class="cv-tab-panel" id="<?php echo esc_attr( sanitize_title( $country['country'] ) ); ?>">
 												<div class="cv-info">
 													<div class="cv-subtitle"><?php esc_html_e( 'Confirmed Cases', 'jms-covid-19' ); ?></div>
-													<div class="cv-confirmed"><?php echo esc_html( $totalcases ); ?></div>
+													<div class="cv-confirmed"><?php echo esc_html( $this->jms_number_format($cases) ); ?></div>
 													<div class="cv-bar">
-														<div class="slice cv-bg-active" style="width:<?php echo esc_attr( $this->jms_calculator_progress( 'activecases', $country ) ); ?>%; margin-right: 4px;"></div>
-														<div class="slice cv-bg-recovered" style="width:<?php echo esc_attr( $this->jms_calculator_progress( 'totalrecovered', $country ) ); ?>%; margin-right: 4px;"></div>
-														<div class="slice cv-bg-deaths" style="width:<?php echo esc_attr( $this->jms_calculator_progress( 'totaldeaths', $country ) ); ?>%;"></div>
+														<div class="slice cv-bg-active" style="width:<?php echo esc_attr( $this->jms_calculator_progress( 'active', $country ) ); ?>%; margin-right: 4px;"></div>
+														<div class="slice cv-bg-recovered" style="width:<?php echo esc_attr( $this->jms_calculator_progress( 'recovered', $country ) ); ?>%; margin-right: 4px;"></div>
+														<div class="slice cv-bg-deaths" style="width:<?php echo esc_attr( $this->jms_calculator_progress( 'deaths', $country ) ); ?>%;"></div>
 													</div>
 													<div class="cv-legend">
 														<div class="color cv-bg-active"></div>
 														<div class="cv-label"><?php esc_html_e( 'Active cases', 'jms-covid-19' ); ?></div>
-														<div class="total"><?php echo esc_html( $activecases ); ?></div>
+														<div class="total"><?php echo esc_html( $this->jms_number_format($active) ); ?></div>
 														<div class="color cv-bg-recovered"></div>
 														<div class="cv-label"><?php esc_html_e( 'Recovered cases', 'jms-covid-19' ); ?></div>
-														<div class="total"><?php echo esc_html( $totalrecovered ); ?></div>
+														<div class="total"><?php echo esc_html( $this->jms_number_format($recovered) ); ?></div>
 														<div class="color cv-bg-deaths"></div>
 														<div class="cv-label"><?php esc_html_e( 'Deaths cases', 'jms-covid-19' ); ?></div>
-														<div class="total"><?php echo esc_html( $totaldeaths ); ?></div>
+														<div class="total"><?php echo esc_html( $this->jms_number_format($deaths) ); ?></div>
 													</div>
 												</div>
 											</div>
@@ -396,28 +396,28 @@ if ( ! class_exists( 'JmsCovid_Front' ) ) {
 							<div class="cv-tab-wrapper">
 								<div class="cv-tab-content">
 									<?php if ( ! empty( $current ) && 'global' !== $atts['country'] ) : ?>
-										<div class="cv-tab-panel" id="<?php echo esc_attr( sanitize_title( $current['countryother'] ) ); ?>">
+										<div class="cv-tab-panel" id="<?php echo esc_attr( sanitize_title( $current['country'] ) ); ?>">
 											<?php if ( $data_show ) : ?>
-												<h4 class="cv-title"><?php echo ! empty( $atts['title'] ) ? esc_html( $atts['title'] ) : esc_html( $current['countryother'] ); ?></h4>
+												<h4 class="cv-title"><?php echo ! empty( $atts['title'] ) ? esc_html( $atts['title'] ) : esc_html( $current['country'] ); ?></h4>
 											<?php endif; ?>
 											<div class="cv-info-country">
 												<div class="cv-title"><?php esc_html_e( 'Confirmed Cases', 'jms-covid-19' ); ?></div>
-												<div class="cv-confirmed"><?php echo esc_html( $current['totalcases'] ); ?></div>
+												<div class="cv-confirmed"><?php echo esc_html( $this->jms_number_format($current['cases']) ); ?></div>
 												<div class="cv-bar">
-													<div class="slice cv-bg-active" style="width:<?php echo esc_attr( $this->jms_calculator_progress( 'activecases', $current ) ); ?>%; margin-right: 4px;"></div>
-													<div class="slice cv-bg-recovered" style="width:<?php echo esc_attr( $this->jms_calculator_progress( 'totalrecovered', $current ) ); ?>%; margin-right: 4px;"></div>
-													<div class="slice cv-bg-deaths" style="width:<?php echo esc_attr( $this->jms_calculator_progress( 'totaldeaths', $current ) ); ?>%;"></div>
+													<div class="slice cv-bg-active" style="width:<?php echo esc_attr( $this->jms_calculator_progress( 'active', $current ) ); ?>%; margin-right: 4px;"></div>
+													<div class="slice cv-bg-recovered" style="width:<?php echo esc_attr( $this->jms_calculator_progress( 'recovered', $current ) ); ?>%; margin-right: 4px;"></div>
+													<div class="slice cv-bg-deaths" style="width:<?php echo esc_attr( $this->jms_calculator_progress( 'deaths', $current ) ); ?>%;"></div>
 												</div>
 												<div class="cv-legend">
 													<div class="color cv-bg-active"></div>
 													<div class="description"><?php esc_html_e( 'Active cases', 'jms-covid-19' ); ?></div>
-													<div class="total"><?php echo ! empty( $current['activecases'] ) ? esc_html( $current['activecases'] ) : 0; ?></div>
+													<div class="total"><?php echo ! empty( $current['active'] ) ? esc_html( $this->jms_number_format($current['active']) ) : 0; ?></div>
 													<div class="color cv-bg-recovered"></div>
 													<div class="description"><?php esc_html_e( 'Recovered cases', 'jms-covid-19' ); ?></div>
-													<div class="total"><?php echo ! empty( $current['totalrecovered'] ) ? esc_html( $current['totalrecovered'] ) : 0; ?></div>
+													<div class="total"><?php echo ! empty( $current['recovered'] ) ? esc_html( $this->jms_number_format($current['recovered']) ) : 0; ?></div>
 													<div class="color cv-bg-deaths"></div>
 													<div class="description"><?php esc_html_e( 'Deaths cases', 'jms-covid-19' ); ?></div>
-													<div class="total"><?php echo ! empty( $current['totaldeaths'] ) ? esc_html( $current['totaldeaths'] ) : 0; ?></div>
+													<div class="total"><?php echo ! empty( $current['deaths'] ) ? esc_html( $this->jms_number_format($current['deaths']) ) : 0; ?></div>
 												</div>
 											</div>
 										</div>
@@ -437,9 +437,9 @@ if ( ! class_exists( 'JmsCovid_Front' ) ) {
 													<tbody>
 													<?php foreach ( $data['country'] as $country ) : ?>
 														<tr>
-															<td><?php echo esc_html( $country['countryother'] ); ?></td>
-															<td><?php echo esc_html( $country['totalcases'] ); ?></td>
-															<td><?php echo esc_html( $country['totaldeaths'] ); ?></td>
+															<td><?php echo esc_html( $this->jms_number_format($country['country']) ); ?></td>
+															<td><?php echo esc_html( $this->jms_number_format($country['cases']) ); ?></td>
+															<td><?php echo esc_html( $this->jms_number_format($country['deaths']) ); ?></td>
 														</tr>
 													<?php endforeach; ?>
 													</tbody>
@@ -447,15 +447,15 @@ if ( ! class_exists( 'JmsCovid_Front' ) ) {
 											</div>
 											<div class="list-desc">
 												<div class="cv-desc-item cv-bg-confirmed">
-													<div class="total"><?php echo ! empty( $data['global']['totalcases'] ) ? esc_html( $data['global']['totalcases'] ) : 0; ?></div>
+													<div class="total"><?php echo ! empty( $data['global']['cases'] ) ? esc_html( $this->jms_number_format($data['global']['cases']) ) : 0; ?></div>
 													<div class="description"><?php esc_html_e( 'Confirmed Cases', 'jms-covid-19' ); ?></div>
 												</div>
 												<div class="cv-desc-item cv-bg-recovered">
-													<div class="total"><?php echo ! empty( $data['global']['totalrecovered'] ) ? esc_html( $data['global']['totalrecovered'] ) : 0; ?></div>
+													<div class="total"><?php echo ! empty( $data['global']['recovered'] ) ? esc_html( $this->jms_number_format($data['global']['recovered']) ) : 0; ?></div>
 													<div class="description"><?php esc_html_e( 'Recovered cases', 'jms-covid-19' ); ?></div>
 												</div>
 												<div class="cv-desc-item cv-bg-deaths">
-													<div class="total"><?php echo ! empty( $data['global']['totaldeaths'] ) ? esc_html( $data['global']['totaldeaths'] ) : 0; ?></div>
+													<div class="total"><?php echo ! empty( $data['global']['deaths'] ) ? esc_html( $this->jms_number_format($data['global']['deaths'])) : 0; ?></div>
 													<div class="description"><?php esc_html_e( 'Deaths cases', 'jms-covid-19' ); ?></div>
 												</div>
 											</div>
@@ -465,7 +465,7 @@ if ( ! class_exists( 'JmsCovid_Front' ) ) {
 								<ul class="cv-nav-tabs">
 									<?php if ( ! empty( $current ) && 'global' !== $atts['country'] ) : ?>
 										<li class="cv-nav-item">
-											<a href="#<?php echo esc_attr( sanitize_title( $current['countryother'] ) ); ?>" class="nav-item"><?php echo esc_html( $current['countryother'] ); ?></a>
+											<a href="#<?php echo esc_attr( sanitize_title( $current['country'] ) ); ?>" class="nav-item"><?php echo esc_html( $current['country'] ); ?></a>
 										</li>
 									<?php endif; ?>
 									<li class="cv-nav-item">
@@ -498,19 +498,21 @@ if ( ! class_exists( 'JmsCovid_Front' ) ) {
 										<?php foreach ( $data['country'] as $country ) : ?>
 											<tr>
 												<?php foreach ( $labels as $key => $label ) : ?>
-													<td><?php echo esc_html( $country[ $key ] ); ?></td>
+													<td><?php echo esc_html( $this->jms_number_format($country[ $key ] )); ?></td>
 												<?php endforeach; ?>
 											</tr>
 										<?php endforeach; ?>
 
 										</tbody>
+                                        <?php if(!empty($data['global'])): ?>
 										<tfoot>
 										<tr>
 											<?php foreach ( $labels as $key => $label ) : ?>
-												<td><?php echo esc_html( $data['global'][ $key ] ); ?></td>
+												<td><?php echo esc_html( $this->jms_number_format($data['global'][ $key ]) ); ?></td>
 											<?php endforeach; ?>
 										</tr>
 										</tfoot>
+                                        <?php endif; ?>
 									</table>
 								<?php endif; ?>
 							</div>
@@ -713,7 +715,7 @@ if ( ! class_exists( 'JmsCovid_Front' ) ) {
 									</div>
 								</div>
 							</div>
-							<div class="tooltip_nCoV" data-confirmed="<?php echo esc_html_e( 'Cases', 'jms-covid-19' ); ?>" data-recovered="<?php echo esc_html_e( 'Recovered', 'jms-covid-19' ); ?>" data-deaths="<?php echo esc_html_e( 'Deaths', 'jms-covid-19' ); ?>"></div>
+							<div class="tooltip_nCoV" data-confirmed="<?php esc_attr_e( 'Cases', 'jms-covid-19' ); ?>" data-recovered="<?php esc_attr_e( 'Recovered', 'jms-covid-19' ); ?>" data-deaths="<?php esc_attr_e( 'Deaths', 'jms-covid-19' ); ?>"></div>
 						</div>
 						<?php
 						break;
@@ -723,18 +725,18 @@ if ( ! class_exists( 'JmsCovid_Front' ) ) {
 						if ( $data ) :
 							?>
 							<div class="jms-covid-style-default jms-covid-style-1">
-								<h4 class="cv-title"><?php echo ! empty( $atts['title'] ) ? esc_html( $atts['title'] ) : esc_html( $data['countryother'] ); ?></h4>
+								<h4 class="cv-title"><?php echo ! empty( $atts['title'] ) ? esc_html( $atts['title'] ) : esc_html( $data['country'] ); ?></h4>
 								<div class="cv-info">
 									<div class="cv-col cv-confirmed-s1">
-										<div class="cv-value"><?php echo ! empty( $data['totalcases'] ) ? esc_html( $data['totalcases'] ) : 0; ?></div>
+										<div class="cv-value"><?php echo ! empty( $data['cases'] ) ? esc_html( $this->jms_number_format($data['cases']) ) : 0; ?></div>
 										<div class="cv-desc"><?php esc_html_e( 'Confirmed', 'jms-covid-19' ); ?></div>
 									</div>
 									<div class="cv-col cv-deaths-s1">
-										<div class="cv-value"><?php echo ! empty( $data['totaldeaths'] ) ? esc_html( $data['totaldeaths'] ) : 0; ?></div>
+										<div class="cv-value"><?php echo ! empty( $data['deaths'] ) ? esc_html( $this->jms_number_format($data['deaths']) ) : 0; ?></div>
 										<div class="cv-desc"><?php esc_html_e( 'Deaths', 'jms-covid-19' ); ?></div>
 									</div>
 									<div class="cv-col cv-recovered-s1">
-										<div class="cv-value"><?php echo ! empty( $data['totalrecovered'] ) ? esc_html( $data['totalrecovered'] ) : 0; ?></div>
+										<div class="cv-value"><?php echo ! empty( $data['recovered'] ) ? esc_html( $this->jms_number_format($data['recovered']) ) : 0; ?></div>
 										<div class="cv-desc"><?php esc_html_e( 'Recovered', 'jms-covid-19' ); ?></div>
 									</div>
 								</div>
@@ -762,11 +764,11 @@ if ( ! class_exists( 'JmsCovid_Front' ) ) {
 
 			$result = array();
 			if ( isset( $data['global'] ) ) {
-				$params['global']['countryother'] = __( 'Global', 'jms-covid-19' );
+				$params['global']['country'] = __( 'Global', 'jms-covid-19' );
 				$result['global']                 = $data['global'];
 			}
 			if ( $countries && $data ) {
-				$key               = array_intersect( array_column( $data['country'], 'countryother' ), $countries );
+				$key               = array_intersect( array_column( $data['country'], 'country' ), $countries );
 				$result['country'] = array_intersect_key( $data['country'], $key );
 			}
 
@@ -786,6 +788,17 @@ if ( ! class_exists( 'JmsCovid_Front' ) ) {
 			return is_array( $string ) ? $string : array_filter( explode( $delimiter, $string ) );
 		}
 
+		/**
+		 * @param $number The number being formatted.
+		 * @param int $decimals Sets the number of decimal points.
+		 * @param string $dec_point Sets the separator for the decimal point.
+		 * @param string $thousands_sep Sets the thousands separator.
+		 *
+		 * @return string
+		 */
+		public function jms_number_format(  $number, $decimals = 0, $dec_point  = '.', $thousands_sep = ',') {
+			return is_numeric( $number ) ? number_format ( $number, $decimals, $dec_point, $thousands_sep) : $number;
+		}
 
 		/**
 		 * Calculator progress.
@@ -795,23 +808,23 @@ if ( ! class_exists( 'JmsCovid_Front' ) ) {
 		 *
 		 * @return float|int
 		 */
-		public function jms_calculator_progress( $key = 'activecases', $data = array() ) {
+		public function jms_calculator_progress( $key = 'active', $data = array() ) {
 			$progress = 0;
 			if ( $data ) {
-				$totalcases     = ! empty( $data['totalcases'] ) ? filter_var( $data['totalcases'], FILTER_SANITIZE_NUMBER_FLOAT ) : 0;
-				$activecases    = ! empty( $data['activecases'] ) ? filter_var( $data['activecases'], FILTER_SANITIZE_NUMBER_FLOAT ) : 0;
-				$totaldeaths    = ! empty( $data['totaldeaths'] ) ? filter_var( $data['totaldeaths'], FILTER_SANITIZE_NUMBER_FLOAT ) : 0;
-				$totalrecovered = ! empty( $data['totalrecovered'] ) ? filter_var( $data['totalrecovered'], FILTER_SANITIZE_NUMBER_FLOAT ) : 0;
+				$cases     = ! empty( $data['cases'] ) ? filter_var( $data['cases'], FILTER_SANITIZE_NUMBER_FLOAT ) : 0;
+				$active    = ! empty( $data['active'] ) ? filter_var( $data['active'], FILTER_SANITIZE_NUMBER_FLOAT ) : 0;
+				$deaths    = ! empty( $data['deaths'] ) ? filter_var( $data['deaths'], FILTER_SANITIZE_NUMBER_FLOAT ) : 0;
+				$recovered = ! empty( $data['recovered'] ) ? filter_var( $data['recovered'], FILTER_SANITIZE_NUMBER_FLOAT ) : 0;
 
 				switch ( $key ) {
-					case 'activecases':
-						$progress = $activecases / $totalcases * 100;
+					case 'active':
+						$progress = $active / $cases * 100;
 						break;
-					case 'totaldeaths':
-						$progress = $totaldeaths / $totalcases * 100;
+					case 'deaths':
+						$progress = $deaths / $cases * 100;
 						break;
-					case 'totalrecovered':
-						$progress = $totalrecovered / $totalcases * 100;
+					case 'recovered':
+						$progress = $recovered / $cases * 100;
 						break;
 				}
 			}
@@ -831,12 +844,11 @@ if ( ! class_exists( 'JmsCovid_Front' ) ) {
 			$data   = get_option( 'jms_covid_data', array() );
 			$result = null;
 			if ( isset( $data['country'] ) & 'global' !== $country ) {
-				$key = array_search( $country, array_column( $data['country'], 'countryother' ), true );
+				$key = array_search( $country, array_column( $data['country'], 'country' ), true );
 				if ( false !== $key ) {
 					$result = $data['country'][ $key ];
 				}
 			} elseif ( isset( $data['global'] ) && 'global' === $country ) {
-				$data['global']['countryother'] = __( 'Global', 'jms-covid-19' );
 				$result                         = $data['global'];
 			} else {
 				return null;

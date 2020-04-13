@@ -30,6 +30,11 @@ Covid-19 plugin is WordPress plugin for live tracking COVID-19 (corona virus) on
 - Multi Language Ready
 - More & More …
 
+== Source ==
+
+https://github.com/NovelCOVID/API
+This API has license at https://github.com/NovelCOVID/API/blob/master/LICENSE
+
 == Installation ==
 
 1. Install the plugin from within the Dashboard or upload the directory jms-covid-19 and all its contents to the /wp-content/plugins/ directory.
@@ -43,5 +48,7 @@ Covid-19 plugin is WordPress plugin for live tracking COVID-19 (corona virus) on
 == Changelog ==
 = 1.0.0 - 2019-09-22 =
 Initial Release
+
+
 
 [See changelog for all versions](http://wp-docs.jmsthemes.com/covid-19/changelog/).

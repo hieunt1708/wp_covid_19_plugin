@@ -4,7 +4,7 @@
  *
  * @package  jms-covid-19
  *
- * Plugin Name: Covid-19 Live Tracking
+ * Plugin Name: Covid-19 Live Tracking 1
  * Plugin URI: https://jmsthemes.com/product/covid-19-live-tracking/
  * Description: COVID-19 Coronavirus Live Tracking.
  * Version: 1.0.0
@@ -33,7 +33,6 @@ require_once 'admin/class-jmscovid-elementor.php';
 require_once 'admin/class-jmscovid-admin.php';
 require_once 'front/class-jmscovid-widget.php';
 require_once 'front/class-jmscovid-front.php';
-require_once 'simple_html_dom.php';
 
 register_activation_hook( __FILE__, 'jms_covid_19_activate' );
 

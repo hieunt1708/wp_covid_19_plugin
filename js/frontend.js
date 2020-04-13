@@ -152,19 +152,21 @@
         },
         load: function() {
             JMS_Covid.countries.sort(function(a, b) {
-                return parseFloat(a.totalcases.replace(/,/g,'')) - parseFloat(b.totalcases.replace(/,/g,''));
+                return a.cases - b.cases;
             });
             for (var a = JMS_Covid.countries, t = 0; t < a.length; t++) {
-                var e = $('.jms-covid-live-map [title="' + a[t].countryother + '"]'),
+                var e = $('.jms-covid-live-map [title="' + a[t].country + '"]'),
                     s = 0;
                 if (e.length) {
-                    var r = a[t].totalcases,
-                        n = a[t].totaldeaths,
-                        o = a[t].totalrecovered;
+                    var r = a[t].cases || 0,
+                        n = a[t].deaths || 0,
+                        o = a[t].recovered || 0;
+                    console.log(a[t].country);
+                    console.log(a[t].recovered);
                     if(JMS_Covid.country_comfirm_cl_type === '2'){
-                        1 <= parseFloat(r.replace(/,/g,'')) && (s = 1);
+                        1 <= r && (s = 1);
                         for (var i = JMS_Covid.number_of_case, j = 0; j < i.length; j++) {
-                            i[j] <= parseFloat(r.replace(/,/g,'')) && (s = j+1)
+                            i[j] <= r && (s = j+1)
                         }
                         e.attr("data-level", s);
                     } else if ( JMS_Covid.country_comfirm_cl_type === '1') {
@@ -174,7 +176,7 @@
                             fillOpacity: s,
                         })
                     }
-                    e.attr("data-cases", r), e.attr("data-deaths", n), e.attr("data-recovered", o);
+                    e.attr("data-cases", r.format()), e.attr("data-deaths", n.format()), e.attr("data-recovered", o.format());
                 }
             }
         },
@@ -207,4 +209,9 @@
             });
         }
     }
+
+    Number.prototype.format = function(n, x) {
+        var re = '(\\d)(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+        return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$1,');
+    };
 })(jQuery);
