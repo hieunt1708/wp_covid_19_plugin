@@ -34,6 +34,7 @@ Covid-19 plugin is WordPress plugin for live tracking COVID-19 (corona virus) on
 
 https://github.com/NovelCOVID/API
 This API has license at https://github.com/NovelCOVID/API/blob/master/LICENSE
+And Privacy Policy https://github.com/NovelCOVID/API/blob/master/privacy.md
 
 == Installation ==
 
